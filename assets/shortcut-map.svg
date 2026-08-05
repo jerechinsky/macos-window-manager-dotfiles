@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Right-hand window control shortcut map</title>
+  <desc id="desc">I J K L always mean north west south east. Option focuses, Shift Option moves, Control Option resizes, Meh stacks, and Hyper inserts. Number row shortcuts control spaces.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10131c"/>
+      <stop offset="1" stop-color="#171b27"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#e7eaf2"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #f7f8fb; }
+      .muted { fill: #aeb5c5; }
+      .key { fill: #252b3a; stroke: #4b5367; stroke-width: 2; }
+      .keyLabel { font-size: 34px; font-weight: 750; text-anchor: middle; }
+      .direction { font-size: 15px; font-weight: 650; text-anchor: middle; fill: #aeb5c5; letter-spacing: 1.5px; }
+      .cardTitle { font-size: 21px; font-weight: 730; }
+      .cardText { font-size: 17px; fill: #c8cedb; }
+      .spaceTitle { font-size: 18px; font-weight: 720; }
+      .spaceText { font-size: 15px; fill: #bdc4d2; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="900" rx="28" fill="url(#bg)"/>
+  <text x="72" y="82" font-size="42" font-weight="780">Right-hand window control</text>
+  <text x="72" y="119" font-size="20" class="muted">Direction stays fixed. The modifier changes the verb.</text>
+
+  <g transform="translate(116 205)">
+    <rect class="key" x="112" y="0" width="104" height="104" rx="18"/>
+    <text class="keyLabel" x="164" y="49">I</text>
+    <text class="direction" x="164" y="78">NORTH</text>
+    <rect class="key" x="0" y="112" width="104" height="104" rx="18"/>
+    <text class="keyLabel" x="52" y="161">J</text>
+    <text class="direction" x="52" y="190">WEST</text>
+    <rect class="key" x="112" y="112" width="104" height="104" rx="18"/>
+    <text class="keyLabel" x="164" y="161">K</text>
+    <text class="direction" x="164" y="190">SOUTH</text>
+    <rect class="key" x="224" y="112" width="104" height="104" rx="18"/>
+    <text class="keyLabel" x="276" y="161">L</text>
+    <text class="direction" x="276" y="190">EAST</text>
+
+    <path d="M164 -14 V-52" stroke="#e7eaf2" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M-14 164 H-52" stroke="#e7eaf2" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M164 230 V268" stroke="#e7eaf2" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M342 164 H380" stroke="#e7eaf2" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g transform="translate(540 175)">
+    <g transform="translate(0 0)">
+      <rect width="380" height="78" rx="16" fill="#1d3c48" stroke="#00b8b8" stroke-width="2"/>
+      <circle cx="34" cy="39" r="9" fill="#00d7d7"/>
+      <text class="cardTitle" x="58" y="32">Option</text>
+      <text class="cardText" x="58" y="57">focus the neighbor</text>
+    </g>
+    <g transform="translate(0 92)">
+      <rect width="380" height="78" rx="16" fill="#3d2f19" stroke="#f7b955" stroke-width="2"/>
+      <circle cx="34" cy="39" r="9" fill="#ffc766"/>
+      <text class="cardTitle" x="58" y="32">Shift + Option</text>
+      <text class="cardText" x="58" y="57">move / warp the window</text>
+    </g>
+    <g transform="translate(0 184)">
+      <rect width="380" height="78" rx="16" fill="#292e52" stroke="#8895ff" stroke-width="2"/>
+      <circle cx="34" cy="39" r="9" fill="#9aa6ff"/>
+      <text class="cardTitle" x="58" y="32">Control + Option</text>
+      <text class="cardText" x="58" y="57">resize by 75 px</text>
+    </g>
+    <g transform="translate(0 276)">
+      <rect width="380" height="78" rx="16" fill="#3b2446" stroke="#cf82ed" stroke-width="2"/>
+      <circle cx="34" cy="39" r="9" fill="#dd94f6"/>
+      <text class="cardTitle" x="58" y="32">Meh</text>
+      <text class="cardText" x="58" y="57">stack with the neighbor</text>
+    </g>
+    <g transform="translate(0 368)">
+      <rect width="380" height="78" rx="16" fill="#42262a" stroke="#ff818f" stroke-width="2"/>
+      <circle cx="34" cy="39" r="9" fill="#ff909c"/>
+      <text class="cardTitle" x="58" y="32">Hyper</text>
+      <text class="cardText" x="58" y="57">set the insertion direction</text>
+    </g>
+  </g>
+
+  <g transform="translate(972 175)">
+    <rect width="396" height="446" rx="22" fill="#202534" stroke="#343b4c" stroke-width="2"/>
+    <text x="30" y="45" font-size="24" font-weight="740">Modifier legend</text>
+    <text class="muted" x="30" y="80" font-size="17">Meh</text>
+    <text x="30" y="108" font-size="18">Control + Option + Shift</text>
+    <line x1="30" y1="136" x2="366" y2="136" stroke="#343b4c"/>
+    <text class="muted" x="30" y="177" font-size="17">Hyper</text>
+    <text x="30" y="205" font-size="18">Meh + Command</text>
+    <line x1="30" y1="233" x2="366" y2="233" stroke="#343b4c"/>
+    <text class="muted" x="30" y="274" font-size="17">Stack cycling</text>
+    <text x="30" y="302" font-size="18">Option + U / O</text>
+    <line x1="30" y1="330" x2="366" y2="330" stroke="#343b4c"/>
+    <text class="muted" x="30" y="371" font-size="17">Layout</text>
+    <text x="30" y="399" font-size="18">Hyper + B / U</text>
+  </g>
+
+  <text x="72" y="680" font-size="27" font-weight="750">Spaces use the number row</text>
+  <g transform="translate(72 712)">
+    <g>
+      <rect width="300" height="108" rx="17" fill="#202534" stroke="#00b8b8" stroke-width="2"/>
+      <text class="spaceTitle" x="22" y="36">Option + 1…9 / 0</text>
+      <text class="spaceText" x="22" y="64">Focus space 1…9 / last</text>
+      <text class="spaceText" x="22" y="88">Fn + Option reaches 10…19</text>
+    </g>
+    <g transform="translate(324 0)">
+      <rect width="300" height="108" rx="17" fill="#202534" stroke="#f7b955" stroke-width="2"/>
+      <text class="spaceTitle" x="22" y="36">Shift + Option + 1…9 / 0</text>
+      <text class="spaceText" x="22" y="64">Send window to space 1…9 / last</text>
+      <text class="spaceText" x="22" y="88">N / M sends previous / next</text>
+    </g>
+    <g transform="translate(648 0)">
+      <rect width="300" height="108" rx="17" fill="#202534" stroke="#cf82ed" stroke-width="2"/>
+      <text class="spaceTitle" x="22" y="36">Meh + 1…0</text>
+      <text class="spaceText" x="22" y="64">Move current space to 1…10</text>
+      <text class="spaceText" x="22" y="88">Fn aliases reach 6…10</text>
+    </g>
+    <g transform="translate(972 0)">
+      <rect width="324" height="108" rx="17" fill="#202534" stroke="#8895ff" stroke-width="2"/>
+      <text class="spaceTitle" x="22" y="36">Option + N / M</text>
+      <text class="spaceText" x="22" y="64">Focus previous / next space</text>
+      <text class="spaceText" x="22" y="88">Shift + Option + = / -: add / remove</text>
+    </g>
+  </g>
+  <text x="72" y="861" font-size="16" class="muted">Yabai + skhd · spatial memory over shortcut memorization</text>
+</svg>

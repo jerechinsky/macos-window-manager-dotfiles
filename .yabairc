@@ -1,0 +1,90 @@
+#!/usr/bin/env zsh
+
+# Yabai: tiling, focus, mouse behavior, floating rules, and scratchpads.
+# Tested with yabai 7.1.24 on macOS 15.7.7 (Apple Silicon).
+
+# Space creation, destruction, movement, sticky windows, opacity, and
+# scratchpads require Yabai's scripting addition. Follow the official Yabai
+# setup guide before enabling these two lines on another Mac.
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# Core tiling ---------------------------------------------------------------
+
+yabai -m config debug_output off
+yabai -m config layout bsp
+yabai -m config split_type auto
+
+yabai -m config top_padding 5
+yabai -m config bottom_padding 5
+yabai -m config left_padding 5
+yabai -m config right_padding 5
+yabai -m config window_gap 6
+
+# Reserve 39 points for Barik on the main display.
+yabai -m config external_bar main:39:0
+
+# Focus and mouse -----------------------------------------------------------
+
+yabai -m config mouse_follows_focus off
+yabai -m config focus_follows_mouse autoraise
+yabai -m config mouse_modifier fn
+yabai -m config mouse_action1 move
+yabai -m config mouse_action2 resize
+yabai -m config mouse_drop_action stack
+
+# Appearance ---------------------------------------------------------------
+
+yabai -m config window_opacity on
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 0.90
+yabai -m config window_opacity_duration 0.0
+yabai -m config window_animation_duration 0.0
+yabai -m config window_shadow off
+yabai -m config window_zoom_persist on
+yabai -m config insert_feedback_color 0xFF008844
+
+# Floating rules -----------------------------------------------------------
+# These keep utility windows, settings, dialogs, and media overlays out of
+# the BSP tree. Remove application-specific rules you do not need.
+
+yabai -m rule --add label="System Settings" app="^System Settings$" manage=off
+yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
+yabai -m rule --add label="Finder dialogs" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+yabai -m rule --add label="Safari settings" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+yabai -m rule --add label="App Store" app="^App Store$" manage=off
+yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
+yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
+yabai -m rule --add label="Raycast settings" app="^Raycast$" title="^Settings$" manage=off
+yabai -m rule --add label="Keka" app="^Keka$" manage=off
+yabai -m rule --add label="SoundSource" app="^SoundSource$" manage=off
+yabai -m rule --add label="Installers" title="^Install$" manage=off
+yabai -m rule --add label="IINA" app="^IINA$" manage=off
+yabai -m rule --add label="Live Captions" app="^Live Captions$" manage=off
+yabai -m rule --add label="CleanShot X" app="^CleanShot X$" manage=off
+yabai -m rule --add label="Arc profile window" app="^Arc$" title="^Alex$" manage=off
+yabai -m rule --add label="System dialogs" subrole="^AXSystemDialog$" manage=off mouse_follows_focus=off
+yabai -m rule --add label="Picture in Picture" title="^Picture in Picture$" manage=off mouse_follows_focus=off sticky=on
+yabai -m rule --add label="Calendar utility windows" app="^Calendar$" title="(General|^$)" manage=off
+yabai -m rule --add label="1Password" app="^1Password$" manage=off
+
+# Scratchpads --------------------------------------------------------------
+# A scratchpad is a named floating window that can be shown and hidden from
+# skhd. Adjust the grid values to suit the display.
+
+yabai -m rule --add label="Spotify scratchpad" app="^Spotify$" scratchpad=spotify grid=24:20:5:0:10:22
+yabai -m rule --add label="Telegram scratchpad" app="^Telegram$" scratchpad=telegram grid=22:22:1:1:3:20
+yabai -m rule --add label="Gemini scratchpad" app="^Google Gemini$" scratchpad=gemini grid=22:22:1:1:4:19
+yabai -m rule --add label="MacTube scratchpad" app="^MacTube$" scratchpad=mactube grid=22:22:16:1:4:20
+
+# A service restart discovers open windows before this file adds its rules.
+# Reapply once so existing windows receive the same treatment as new ones,
+# then start any recovered scratchpads hidden.
+yabai -m rule --apply
+
+for scratchpad in spotify telegram gemini mactube; do
+    if yabai -m query --windows | jq -e --arg label "$scratchpad" \
+        'any(.[]; .scratchpad == $label and ."is-visible")' >/dev/null; then
+        yabai -m window --toggle "$scratchpad"
+    fi
+done

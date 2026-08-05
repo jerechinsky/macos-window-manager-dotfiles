@@ -1,0 +1,232 @@
+# skhd: a right-hand spatial language for Yabai.
+#
+# Directional key shape:
+#       I = north
+#   J = west   K = south   L = east
+#
+# Modifier layers:
+#   Option               focus
+#   Shift + Option       move / warp
+#   Control + Option     resize
+#   Meh                  stack (Control + Option + Shift)
+#   Hyper                choose insertion point (Meh + Command)
+#
+# The notifyutil calls update the optional Barik space/window indicators.
+
+# Directional window control ------------------------------------------------
+
+alt - i : yabai -m window --focus north; /usr/bin/notifyutil -p com.barik.window_changed
+alt - j : yabai -m window --focus west; /usr/bin/notifyutil -p com.barik.window_changed
+alt - k : yabai -m window --focus south; /usr/bin/notifyutil -p com.barik.window_changed
+alt - l : yabai -m window --focus east; /usr/bin/notifyutil -p com.barik.window_changed
+
+shift + alt - i : yabai -m window --warp north; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - j : yabai -m window --warp west; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - k : yabai -m window --warp south; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - l : yabai -m window --warp east; /usr/bin/notifyutil -p com.barik.window_changed
+
+lctrl + alt - i : \
+    yabai -m window --resize top:0:-75 ; \
+    yabai -m window --resize bottom:0:-75
+
+lctrl + alt - j : \
+    yabai -m window --resize left:-75:0 ; \
+    yabai -m window --resize right:-75:0
+
+lctrl + alt - k : \
+    yabai -m window --resize bottom:0:75 ; \
+    yabai -m window --resize top:0:75
+
+lctrl + alt - l : \
+    yabai -m window --resize right:75:0 ; \
+    yabai -m window --resize left:75:0
+
+meh - i : yabai -m window --stack north; /usr/bin/notifyutil -p com.barik.window_changed
+meh - j : yabai -m window --stack west; /usr/bin/notifyutil -p com.barik.window_changed
+meh - k : yabai -m window --stack south; /usr/bin/notifyutil -p com.barik.window_changed
+meh - l : yabai -m window --stack east; /usr/bin/notifyutil -p com.barik.window_changed
+
+hyper - i : yabai -m window --insert north
+hyper - j : yabai -m window --insert west
+hyper - k : yabai -m window --insert south
+hyper - l : yabai -m window --insert east
+
+# Stack navigation ----------------------------------------------------------
+
+alt - o : yabai -m window --focus stack.prev || yabai -m window --focus stack.last; yabai -m window --opacity 1.0; /usr/bin/notifyutil -p com.barik.window_changed
+alt - u : yabai -m window --focus stack.next || yabai -m window --focus stack.first; yabai -m window --opacity 1.0; /usr/bin/notifyutil -p com.barik.window_changed
+
+# W/E are an alternate pair for the same stack navigation.
+alt - w : yabai -m window --focus stack.prev || yabai -m window --focus stack.last; yabai -m window --opacity 1.0; /usr/bin/notifyutil -p com.barik.window_changed
+alt - e : yabai -m window --focus stack.next || yabai -m window --focus stack.first; yabai -m window --opacity 1.0; /usr/bin/notifyutil -p com.barik.window_changed
+
+alt - h : yabai -m window --focus first; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - h : yabai -m window --insert stack
+
+# Direct space focus --------------------------------------------------------
+# Physical keycodes make the number row independent of the active layout:
+# 0x12..0x1D below map to 1,2,3,4,5,6,7,8,9,0.
+
+alt - 0x12 : /usr/bin/notifyutil -p com.barik.space_requested.1; yabai -m space --focus 1
+alt - 0x13 : /usr/bin/notifyutil -p com.barik.space_requested.2; yabai -m space --focus 2
+alt - 0x14 : /usr/bin/notifyutil -p com.barik.space_requested.3; yabai -m space --focus 3
+alt - 0x15 : /usr/bin/notifyutil -p com.barik.space_requested.4; yabai -m space --focus 4
+alt - 0x17 : /usr/bin/notifyutil -p com.barik.space_requested.5; yabai -m space --focus 5
+alt - 0x16 : /usr/bin/notifyutil -p com.barik.space_requested.6; yabai -m space --focus 6
+alt - 0x1A : /usr/bin/notifyutil -p com.barik.space_requested.7; yabai -m space --focus 7
+alt - 0x1C : /usr/bin/notifyutil -p com.barik.space_requested.8; yabai -m space --focus 8
+alt - 0x19 : /usr/bin/notifyutil -p com.barik.space_requested.9; yabai -m space --focus 9
+alt - 0x1D : s=$(yabai -m query --spaces --space last | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus last
+
+# Fn offers the same direct layer when that modifier is easier to reach.
+fn - 0x12 : /usr/bin/notifyutil -p com.barik.space_requested.1; yabai -m space --focus 1
+fn - 0x13 : /usr/bin/notifyutil -p com.barik.space_requested.2; yabai -m space --focus 2
+fn - 0x14 : /usr/bin/notifyutil -p com.barik.space_requested.3; yabai -m space --focus 3
+fn - 0x15 : /usr/bin/notifyutil -p com.barik.space_requested.4; yabai -m space --focus 4
+fn - 0x17 : /usr/bin/notifyutil -p com.barik.space_requested.5; yabai -m space --focus 5
+fn - 0x16 : /usr/bin/notifyutil -p com.barik.space_requested.6; yabai -m space --focus 6
+fn - 0x1A : /usr/bin/notifyutil -p com.barik.space_requested.7; yabai -m space --focus 7
+fn - 0x1C : /usr/bin/notifyutil -p com.barik.space_requested.8; yabai -m space --focus 8
+fn - 0x19 : /usr/bin/notifyutil -p com.barik.space_requested.9; yabai -m space --focus 9
+fn - 0x1D : s=$(yabai -m query --spaces --space last | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus last
+
+# Fn + Option extends the number row to spaces 10..19.
+fn + alt - 0x12 : /usr/bin/notifyutil -p com.barik.space_requested.10; yabai -m space --focus 10
+fn + alt - 0x13 : /usr/bin/notifyutil -p com.barik.space_requested.11; yabai -m space --focus 11
+fn + alt - 0x14 : /usr/bin/notifyutil -p com.barik.space_requested.12; yabai -m space --focus 12
+fn + alt - 0x15 : /usr/bin/notifyutil -p com.barik.space_requested.13; yabai -m space --focus 13
+fn + alt - 0x17 : /usr/bin/notifyutil -p com.barik.space_requested.14; yabai -m space --focus 14
+fn + alt - 0x16 : /usr/bin/notifyutil -p com.barik.space_requested.15; yabai -m space --focus 15
+fn + alt - 0x1A : /usr/bin/notifyutil -p com.barik.space_requested.16; yabai -m space --focus 16
+fn + alt - 0x1C : /usr/bin/notifyutil -p com.barik.space_requested.17; yabai -m space --focus 17
+fn + alt - 0x19 : /usr/bin/notifyutil -p com.barik.space_requested.18; yabai -m space --focus 18
+fn + alt - 0x1D : /usr/bin/notifyutil -p com.barik.space_requested.19; yabai -m space --focus 19
+
+# Relative space focus: N/M are primary; Z/X and comma/period are aliases.
+alt - 0x2D : s=$(yabai -m query --spaces --space prev | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus prev
+alt - 0x2E : s=$(yabai -m query --spaces --space next | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus next
+alt - 0x06 : s=$(yabai -m query --spaces --space prev | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus prev
+alt - 0x07 : s=$(yabai -m query --spaces --space next | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus next
+alt - 0x2B : s=$(yabai -m query --spaces --space prev | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus prev
+alt - 0x2F : s=$(yabai -m query --spaces --space next | jq -re .index) && /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus next
+
+# Space creation and movement ----------------------------------------------
+
+# Shift + Option + equals/minus creates or destroys a space.
+shift + alt - 0x18 : yabai -m space --create && (s=$(yabai -m query --spaces --space last | jq -re .index); [ -z "$s" ] || /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus last)
+shift + alt - 0x1B : yabai -m space mouse --destroy && (s=$(yabai -m query --spaces --space last | jq -re .index); [ -z "$s" ] || /usr/bin/notifyutil -p com.barik.space_requested.$s; yabai -m space --focus last)
+
+# Meh + number moves the current space to that position.
+meh - 0x12 : yabai -m space --move 1; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x13 : yabai -m space --move 2; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x14 : yabai -m space --move 3; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x15 : yabai -m space --move 4; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x17 : yabai -m space --move 5; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x16 : yabai -m space --move 6; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x1A : yabai -m space --move 7; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x1C : yabai -m space --move 8; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x19 : yabai -m space --move 9; /usr/bin/notifyutil -p com.barik.space_changed
+meh - 0x1D : yabai -m space --move 10; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Easy-reach aliases for moving the current space to positions 6..10.
+meh + fn - 0x12 : yabai -m space --move 6; /usr/bin/notifyutil -p com.barik.space_changed
+meh + fn - 0x13 : yabai -m space --move 7; /usr/bin/notifyutil -p com.barik.space_changed
+meh + fn - 0x14 : yabai -m space --move 8; /usr/bin/notifyutil -p com.barik.space_changed
+meh + fn - 0x15 : yabai -m space --move 9; /usr/bin/notifyutil -p com.barik.space_changed
+meh + fn - 0x17 : yabai -m space --move 10; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Shift + Option + comma/period moves the current space left/right.
+shift + alt - 0x2B : yabai -m space --move prev; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x2F : yabai -m space --move next; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Move focused window between spaces ---------------------------------------
+
+shift + alt - 0x12 : yabai -m window --space 1; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x13 : yabai -m window --space 2; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x14 : yabai -m window --space 3; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x15 : yabai -m window --space 4; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x17 : yabai -m window --space 5; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x16 : yabai -m window --space 6; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x1A : yabai -m window --space 7; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x1C : yabai -m window --space 8; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x19 : yabai -m window --space 9; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x1D : yabai -m window --space last; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Easy-reach aliases for sending a window to spaces 6..9 or the last space.
+fn + shift + alt - 0x12 : yabai -m window --space 6; /usr/bin/notifyutil -p com.barik.space_changed
+fn + shift + alt - 0x13 : yabai -m window --space 7; /usr/bin/notifyutil -p com.barik.space_changed
+fn + shift + alt - 0x14 : yabai -m window --space 8; /usr/bin/notifyutil -p com.barik.space_changed
+fn + shift + alt - 0x15 : yabai -m window --space 9; /usr/bin/notifyutil -p com.barik.space_changed
+fn + shift + alt - 0x17 : yabai -m window --space last; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Shift + Option + N/M sends a window to the previous/next space.
+shift + alt - 0x2D : yabai -m window --space prev; /usr/bin/notifyutil -p com.barik.space_changed
+shift + alt - 0x2E : yabai -m window --space next; /usr/bin/notifyutil -p com.barik.space_changed
+
+# Layout and window state ---------------------------------------------------
+
+hyper - b : yabai -m space --layout bsp; /usr/bin/notifyutil -p com.barik.space_changed
+hyper - u : yabai -m space --layout float; /usr/bin/notifyutil -p com.barik.space_changed
+
+shift + alt - p : yabai -m window --toggle split; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - r : yabai -m space --rotate 90; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - e : yabai -m space --rotate 270; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - x : yabai -m space --mirror x-axis; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - t : yabai -m space --mirror y-axis; /usr/bin/notifyutil -p com.barik.window_changed
+
+shift + alt - space : yabai -m window --toggle float; /usr/bin/notifyutil -p com.barik.window_changed
+meh - s : yabai -m window --toggle sticky; /usr/bin/notifyutil -p com.barik.window_changed
+lctrl + alt - 0x1D : yabai -m space --balance
+
+alt - f : yabai -m window --toggle zoom-fullscreen; /usr/bin/notifyutil -p com.barik.window_changed
+shift + alt - f : yabai -m window --toggle native-fullscreen; /usr/bin/notifyutil -p com.barik.window_changed
+
+hyper - o : yabai -m config window_opacity on
+meh - p : yabai -m window --opacity 1.0
+meh - o : yabai -m window --opacity 0.0
+
+meh - y : yabai --restart-service
+
+# Scratchpad and Barik media helpers ---------------------------------------
+
+cmd + alt - s : yabai -m window --toggle spotify || open -a Spotify
+meh - d : touch /tmp/.barik-spotify-like
+hyper - d : touch /tmp/.barik-spotify-unlike
+
+# Input-source helpers ------------------------------------------------------
+# macism prevents these phonetic-layout helpers from firing on other layouts.
+
+ctrl - i : /opt/homebrew/bin/macism | grep -qE "Ukrainian-QWERTY|Russian-Phonetic" && skhd -t "ї"
+shift + ctrl - i : /opt/homebrew/bin/macism | grep -qE "Ukrainian-QWERTY|Russian-Phonetic" && skhd -t "Ї"
+ctrl - w : /opt/homebrew/bin/macism | grep -qE "Ukrainian-QWERTY|Russian-Phonetic" && skhd -t "щ"
+shift + ctrl - w : /opt/homebrew/bin/macism | grep -qE "Ukrainian-QWERTY|Russian-Phonetic" && skhd -t "Щ"
+
+# Browser tab layer ---------------------------------------------------------
+
+ctrl - z [
+    "orion" : skhd -k "ctrl + shift - tab"
+    "chrome" : skhd -k "ctrl + shift - tab"
+    "zen" : skhd -k "ctrl + shift - tab"
+]
+
+ctrl - x [
+    "orion" : skhd -k "ctrl - tab"
+    "chrome" : skhd -k "ctrl - tab"
+    "zen" : skhd -k "ctrl - tab"
+]
+
+ctrl - c [
+    "orion" : skhd -k "cmd - w"
+    "chrome" : skhd -k "cmd - w"
+    "zen" : skhd -k "cmd - w"
+]
+
+ctrl - v [
+    "orion" : skhd -k "cmd - t"
+    "chrome" : skhd -k "cmd - t"
+    "zen" : skhd -k "cmd - t"
+]
+
+# Homerow ------------------------------------------------------------------
+
+alt - d : skhd -k "alt - space"
