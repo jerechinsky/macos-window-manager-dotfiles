@@ -52,6 +52,12 @@ There are a few deliberate aliases in [.skhdrc](.skhdrc) for whichever keys are 
 
 The Yabai file also defines floating rules for utility windows and scratchpads for Spotify, Telegram, Gemini, and MacTube. Delete or adapt those app-specific rules freely.
 
+### Scratchpad recovery on restart
+
+The final block in [.yabairc](.yabairc) runs once whenever Yabai loads its configuration. Yabai discovers already-open windows before the configuration adds its rules, so `yabai -m rule --apply` reapplies the new rules to those windows.
+
+The following `for` loop checks each named scratchpad with `jq`. If its window exists and is currently visible, `yabai -m window --toggle` hides it. This makes recovered scratchpads start in the same hidden state as new scratchpads. It does **not** open applications, close windows, poll in the background, or keep running after startup.
+
 ## Install
 
 1. Read Yabai's [installation](https://github.com/asmvik/yabai/wiki/Installing-yabai-%28latest-release%29) and [scripting-addition](https://github.com/asmvik/yabai/wiki/Disabling-System-Integrity-Protection) instructions first. Several bindings here need the scripting addition and a compatible SIP configuration.
@@ -83,6 +89,31 @@ The Yabai file also defines floating rules for utility windows and scratchpads f
    ```
 
 The installer saves the previous files under `~/.dotfiles-backups/` before replacing them. It does not install or change Yabai's scripting-addition/SIP setup.
+
+## What needs partial SIP
+
+Yabai and most of this setup work with SIP fully enabled. Partial SIP is only needed so Yabai can load its scripting addition into Dock.app. Follow Yabai's [current partial-SIP instructions](https://github.com/asmvik/yabai/wiki/Disabling-System-Integrity-Protection); the installer in this repository deliberately does not change Mac security settings.
+
+With SIP fully enabled, these parts of this configuration will not work:
+
+| Feature | Affected configuration and shortcuts |
+| --- | --- |
+| Create or destroy Spaces | `Shift + Option + = / -` |
+| Reorder the current Space | `Meh + 1…0`, `Meh + Fn + 1…5`, and `Shift + Option + , / .` |
+| Send a window to another Space | `Shift + Option + 1…9 / 0`, `Fn + Shift + Option + 1…5`, and `Shift + Option + N / M` on current macOS releases |
+| Scratchpad windows | The Spotify, Telegram, Gemini, and MacTube rules; `Command + Option + S`; and the startup recovery block explained above |
+| Window transparency and shadow removal | The 90% inactive opacity, `window_shadow off`, `Hyper + O`, and `Meh + P / O` |
+| Yabai window animation control | `window_animation_duration 0.0` |
+| Sticky windows and related window-layer features | `Meh + S` and the sticky Picture-in-Picture rule |
+
+With SIP enabled, these important parts still work:
+
+- BSP tiling, padding, gaps, floating rules, mouse controls, and JankyBorders.
+- `Option + I/J/K/L` focus, `Shift + Option + I/J/K/L` warp, resize, stack, insert, rotate, mirror, balance, zoom, floating, and native full screen.
+- Focusing existing Spaces with `Option + 1…9 / 0`, `Fn + 1…9 / 0`, `Fn + Option + 1…0`, or the previous/next aliases. Yabai added SIP-enabled Space focusing in [version 7.1.19](https://github.com/asmvik/yabai/blob/master/CHANGELOG.md).
+- Browser, keyboard-layout, Homerow, Barik notification, and media-helper shortcuts that do not invoke a SIP-dependent Yabai command.
+
+JankyBorders is separate from Yabai's own `window_shadow` setting, so the teal focus border continues to work with SIP enabled. Check `man yabai` after upgrading because Apple and Yabai can change these boundaries between releases.
 
 ## Optional integrations
 
