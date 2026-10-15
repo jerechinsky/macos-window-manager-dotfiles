@@ -50,7 +50,7 @@ There are a few deliberate aliases in [.skhdrc](.skhdrc) for whichever keys are 
 | `Option + Command + E` | Toggle the Telegram scratchpad |
 | `Command + Option + S` | Toggle the Spotify scratchpad |
 | `Control + Z / X / C / V` | Previous tab / next tab / close tab / new tab in supported browsers |
-| `Option + D` | Open [Homerow](https://www.homerow.app/) |
+| `Command + F19` / `Option + F19` | Like / unlike the current Spotify track in Barik |
 
 The Yabai file also defines floating rules for utility windows and scratchpads for Spotify, Telegram, Gemini, MacTube, and ChatGPT. Delete or adapt those app-specific rules freely.
 

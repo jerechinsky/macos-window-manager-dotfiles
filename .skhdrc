@@ -194,8 +194,9 @@ meh - y : "$HOME/.local/bin/shortcut-used" skhd "ctrl+shift+alt-y" 2>/dev/null |
 ctrl + cmd - a : "$HOME/.local/bin/shortcut-used" skhd "ctrl+cmd-a" 2>/dev/null || true; "$HOME/.config/yabai/toggle-scratchpad.zsh" chatgpt ChatGPT "ChatGPT scratchpad"
 alt + cmd - e : "$HOME/.local/bin/shortcut-used" skhd "alt+cmd-e" 2>/dev/null || true; "$HOME/.config/yabai/toggle-scratchpad.zsh" telegram Telegram "Telegram scratchpad"
 cmd + alt - s : "$HOME/.local/bin/shortcut-used" skhd "alt+cmd-s" 2>/dev/null || true; "$HOME/.config/yabai/toggle-scratchpad.zsh" spotify Spotify "Spotify scratchpad"
-meh - d : "$HOME/.local/bin/shortcut-used" skhd "ctrl+shift+alt-d" 2>/dev/null || true; touch /tmp/.barik-spotify-like
-hyper - d : "$HOME/.local/bin/shortcut-used" skhd "ctrl+shift+alt+cmd-d" 2>/dev/null || true; touch /tmp/.barik-spotify-unlike
+
+cmd - f19 : "$HOME/.local/bin/shortcut-used" skhd "cmd-f19" 2>/dev/null || true; printf '1' > /tmp/.barik-spotify-like
+alt - f19 : "$HOME/.local/bin/shortcut-used" skhd "alt-f19" 2>/dev/null || true; printf '1' > /tmp/.barik-spotify-unlike
 
 # Input-source helpers ------------------------------------------------------
 # macism prevents these phonetic-layout helpers from firing on other layouts.
@@ -233,4 +234,4 @@ ctrl - v [
 
 # Homerow ------------------------------------------------------------------
 
-alt - d : "$HOME/.local/bin/shortcut-used" skhd "alt-d" 2>/dev/null || true; skhd -k "alt - space"
+# alt - d : "$HOME/.local/bin/shortcut-used" skhd "alt-d" 2>/dev/null || true; skhd -k "alt - space"
