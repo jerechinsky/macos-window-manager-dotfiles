@@ -1,3 +1,14 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Private local working material
+/work/
+/outputs/
+/backup/
+/backups/
+/interceptor-screenshot-*.png
+.env
+.env.*
+!.env.example
+*.log

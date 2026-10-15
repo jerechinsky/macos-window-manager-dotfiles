@@ -9,6 +9,32 @@
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
+# Keep the standalone Tabs Outliner window on the same Brave profile as the
+# browser window that has just received focus.
+yabai -m signal --add label="Sync Tabs Outliner profile" \
+    event=window_focused \
+    app="^Brave Browser Beta$" \
+    title=" - Brave Beta - (Work|Personal)$" \
+    action="'$HOME/.config/yabai/sync-tabs-outliner-profile.zsh' \$YABAI_WINDOW_ID"
+
+# Pin both profiles to the left column of the main display's first desktop.
+"$HOME/.config/yabai/place-tabs-outliner.zsh"
+yabai -m rule --add label="Tabs Outliner home" app="^Brave Browser Beta$" \
+    title="^Tabs Outliner( · (Work|Personal))?( - (Work|Personal))?$" space=tabs-outliner-home manage=on
+for event in window_created window_title_changed window_focused window_deminimized; do
+    title_filter=".*"
+    [[ "$event" == window_title_changed ]] && title_filter="^Tabs Outliner( · (Work|Personal))?( - (Work|Personal))?$"
+    yabai -m signal --add label="Place Tabs Outliner $event" event="$event" \
+        app="^Brave Browser Beta$" title="$title_filter" \
+        action="'$HOME/.config/yabai/place-tabs-outliner.zsh' \$YABAI_WINDOW_ID"
+done
+# Reconcile after desktop/display transitions without moving focus. Window
+# geometry signals are deliberately excluded to avoid self-triggering loops.
+for event in space_changed display_added display_removed; do
+    yabai -m signal --add label="Place Tabs Outliner $event" event="$event" \
+        action="'$HOME/.config/yabai/place-tabs-outliner.zsh'"
+done
+
 # Core tiling ---------------------------------------------------------------
 
 yabai -m config debug_output off
@@ -22,7 +48,7 @@ yabai -m config right_padding 5
 yabai -m config window_gap 6
 
 # Reserve 39 points for Barik on the main display.
-yabai -m config external_bar main:39:0
+yabai -m config external_bar main:33:0
 
 # Focus and mouse -----------------------------------------------------------
 
@@ -76,6 +102,7 @@ yabai -m rule --add label="Spotify scratchpad" app="^Spotify$" scratchpad=spotif
 yabai -m rule --add label="Telegram scratchpad" app="^Telegram$" scratchpad=telegram grid=22:22:1:1:3:20
 yabai -m rule --add label="Gemini scratchpad" app="^Google Gemini$" scratchpad=gemini grid=22:22:1:1:4:19
 yabai -m rule --add label="MacTube scratchpad" app="^MacTube$" scratchpad=mactube grid=22:22:16:1:4:20
+yabai -m rule --add label="ChatGPT scratchpad" app="^ChatGPT$" scratchpad=chatgpt
 
 # This startup-only block does not poll or keep running. A service restart
 # discovers open windows before this file adds its rules, so reapply the rules
@@ -85,7 +112,7 @@ yabai -m rule --apply
 # For each label, jq checks whether a matching scratchpad window is visible.
 # If one is visible, --toggle hides it. Missing or already-hidden windows are
 # left alone.
-for scratchpad in spotify telegram gemini mactube; do
+for scratchpad in spotify telegram gemini mactube chatgpt; do
     if yabai -m query --windows | jq -e --arg label "$scratchpad" \
         'any(.[]; .scratchpad == $label and ."is-visible")' >/dev/null; then
         yabai -m window --toggle "$scratchpad"

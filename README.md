@@ -46,11 +46,15 @@ There are a few deliberate aliases in [.skhdrc](.skhdrc) for whichever keys are 
 | `Option + F` | Toggle Yabai zoom |
 | `Shift + Option + F` | Toggle native full screen |
 | `Hyper + B / U` | Set the space to BSP / floating layout |
+| `Control + Command + A` | Toggle the ChatGPT scratchpad |
+| `Option + Command + E` | Toggle the Telegram scratchpad |
 | `Command + Option + S` | Toggle the Spotify scratchpad |
 | `Control + Z / X / C / V` | Previous tab / next tab / close tab / new tab in supported browsers |
 | `Option + D` | Open [Homerow](https://www.homerow.app/) |
 
-The Yabai file also defines floating rules for utility windows and scratchpads for Spotify, Telegram, Gemini, and MacTube. Delete or adapt those app-specific rules freely.
+The Yabai file also defines floating rules for utility windows and scratchpads for Spotify, Telegram, Gemini, MacTube, and ChatGPT. Delete or adapt those app-specific rules freely.
+
+The ChatGPT, Telegram, and Spotify bindings use a small self-healing wrapper around Yabai's native scratchpad command. Hiding still orders out only the selected window, so other windows from that application remain visible. When showing, the wrapper also activates the owning application, which recovers the same hidden or stale Accessibility state that clicking its Dock icon repairs. If Yabai has lost the scratchpad assignment, the wrapper reapplies that application's existing named rule and retries. Compact state-only diagnostics, without window titles, are written to `~/Library/Logs/yabai-scratchpad.log` and rotated at 1 MB.
 
 ### Scratchpad recovery on restart
 
@@ -88,7 +92,7 @@ The following `for` loop checks each named scratchpad with `jq`. If its window e
    ./scripts/install.sh
    ```
 
-The installer saves the previous files under `~/.dotfiles-backups/` before replacing them. It does not install or change Yabai's scripting-addition/SIP setup.
+The installer saves the previous files under `~/.dotfiles-backups/` before replacing them. It installs the self-healing scratchpad helper under `~/.config/yabai/`. Yabai is restarted so its rules are reapplied; skhd watches `.skhdrc` and reloads it automatically when the file changes. The installer does not install or change Yabai's scripting-addition/SIP setup.
 
 ## What needs partial SIP
 
@@ -101,7 +105,7 @@ With SIP fully enabled, these parts of this configuration will not work:
 | Create or destroy Spaces | `Shift + Option + = / -` |
 | Reorder the current Space | `Meh + 1…0`, `Meh + Fn + 1…5`, and `Shift + Option + , / .` |
 | Send a window to another Space | `Shift + Option + 1…9 / 0`, `Fn + Shift + Option + 1…5`, and `Shift + Option + N / M` on current macOS releases |
-| Scratchpad windows | The Spotify, Telegram, Gemini, and MacTube rules; `Command + Option + S`; and the startup recovery block explained above |
+| Scratchpad windows | The Spotify, Telegram, Gemini, MacTube, and ChatGPT rules; `Control + Command + A`; `Option + Command + E / S`; and the startup recovery block explained above |
 | Window transparency and shadow removal | The 90% inactive opacity, `window_shadow off`, `Hyper + O`, and `Meh + P / O` |
 | Yabai window animation control | `window_animation_duration 0.0` |
 | Sticky windows and related window-layer features | `Meh + S` and the sticky Picture-in-Picture rule |
@@ -141,3 +145,24 @@ This repository contains active window-management configuration only. Old disabl
 ## License
 
 [MIT](LICENSE). Yabai, skhd, JankyBorders, macism, Homerow, and Barik are separate projects with their own authors and licenses.
+
+## Tabs Outliner desktop
+
+`place-tabs-outliner.zsh` keeps the Work and Personal Outliners in one left
+stack (23% width), and ordinary managed Brave Beta windows on that desktop in
+one right stack. It follows the `tabs-outliner-home` label on the main display,
+falling back to that display's first non-fullscreen desktop.
+
+Creation, standalone Outliner title changes, focus, restoration from minimization, and Space/display
+transitions reconcile the layout. Geometry events are excluded to prevent a
+feedback loop. Bursts share one worker with a trailing refresh, and inactive
+desktops reconcile when revisited. Standalone Outliner titles are matched
+exactly so an ordinary browser tab showing Outliner stays in the right stack.
+Browser windows on other desktops, floating utilities, and
+minimized/hidden windows are excluded. If TV Player is on the home desktop,
+reconciliation pauses to avoid indirectly resizing it. With no ordinary browser
+on the desktop, the Outliners fill the available tile until a browser arrives.
+
+The profile sync uses raise without transferring keyboard focus. The reconciler
+also reapplies it after stacking, so the last stacked Outliner cannot override
+the focused browser's profile.

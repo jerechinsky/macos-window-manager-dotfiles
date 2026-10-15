@@ -6,6 +6,10 @@ cd "$repo_root"
 
 zsh -n .yabairc
 zsh -n .config/borders/bordersrc
+zsh -n scripts/toggle-scratchpad.zsh
+zsh -n scripts/cycle-stack.zsh
+zsh -n scripts/sync-tabs-outliner-profile.zsh
+zsh -n scripts/place-tabs-outliner.zsh
 python3 scripts/check_skhd.py .skhdrc
 xmllint --noout assets/shortcut-map.svg
 
